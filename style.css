@@ -1,0 +1,17 @@
+.calculator {
+    display: flex;
+    flex-direction: column;
+    height: 100px;
+    gap: 2px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 2px;
+    border: red;
+}
+
+.button {
+    aspect-ratio: 1 / 1;
+}
