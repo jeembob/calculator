@@ -5,8 +5,11 @@ const cle = document.getElementById("CE");
 const arithOperators = document.querySelectorAll(".arith");
 const operators = document.querySelectorAll(".op");
 const equals = document.getElementById("equals");
+const contextWindow = document.getElementById("context");
 
 const validInputs = "1234567890.)/+-";
+
+
 
 //Display level
 let inputDisplayNum = ""; //a holder to captur
@@ -14,7 +17,9 @@ let inputDisplayNum = ""; //a holder to captur
 //Under the hood level
 let accum = null; //this is the saved A and will always be a float
 let currentOperator = null; //this is what you need to do
-let contest = ""
+let contextText = "";
+
+document 
 
 //CE clears all memory
 cle.addEventListener("click", () => {
@@ -23,6 +28,7 @@ cle.addEventListener("click", () => {
   currentOperator = null;
   output.textContent = "";
   inputDisplayNum = "";
+  contextWindow.textContent = "";
   floatEntry = 0;
 });
 
@@ -50,6 +56,13 @@ const operations = {
   divide,
 };
 
+const operatorSymbols = {
+  add: "+",
+  subtract: "−",  
+  multiply: "×",   
+  divide: "÷"
+};
+
 //Create inputDisplayNum mechanism
 numBtns.forEach((numBut) => {
   numBut.addEventListener("click", (event) => {
@@ -60,6 +73,9 @@ numBtns.forEach((numBut) => {
     } else {
       inputDisplayNum += event.target.textContent;
       output.textContent = inputDisplayNum;
+      if (currentOperator != null && accum != null) {
+        contextWindow.textContent = accum + " " + operatorSymbols[currentOperator];
+      }
     }
   });
 });
@@ -73,6 +89,7 @@ function evaluate() {
   output.textContent = accum; //display the result
   currentOperator = null; //await new operator
   inputDisplayNum = "";
+  contextWindow.textContent = "";
 }
 
 operators.forEach((opBut) => {
@@ -85,12 +102,14 @@ operators.forEach((opBut) => {
       output.textContent = accum + " " + event.target.textContent;
       inputDisplayNum = ""; //reset the entry to next number input starts from nothing (new number)
 
-      //Accum an accum but an operator, just change the operator
+      //Right after you hit equals
     } else if (accum != null && currentOperator === null) {
       //right after equals, if you hit a operator, just change it
       currentOperator = event.target.id;
       output.textContent = accum + " " + event.target.textContent;
       inputDisplayNum = "";
+
+      //On sequential operator push
     } else if (accum != null && currentOperator != null) {
       evaluate(); //evaluate with current operator
       currentOperator = event.target.id; //preapre for next operator
