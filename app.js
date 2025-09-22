@@ -9,26 +9,26 @@ const operators = document.querySelectorAll(".op");
 let inputDisplayNum = ""; //a holder to captur
 
 //Under the hood level
-let floatEntry = parseFloat(inputDisplayNum); //the actual scren reading as a number
 let accum = null; //this is the saved A and will always be a float
 let currentOperator = null; //this is what you need to do
 
 //CE clears all memory
 cle.addEventListener("click", () => {
+  console.log("pushed");
   accum = null;
   currentOperator = null;
   output.textContent = "";
   inputDisplayNum = "";
-  floatEntry = "";
+  floatEntry = 0;
 });
 
 //all of my functions
 function add(a, b) {
-  accum = a + b;
+  return a + b;
 }
 
-function subject(a, b) {
-  accum = a - b;
+function subtract(a, b) {
+  return a - b;
 }
 
 function divide(a, b) {
@@ -36,16 +36,16 @@ function divide(a, b) {
   // if (b === 0) {
   //     inputDisplayNum = "Error"
   // }
-  accum = a / b;
+  return a / b;
 }
 
 function multiply(a, b) {
-  accum = a / b;
+  return a * b;
 }
 
 const operations = {
   add,
-  subject,
+  subtract,
   multiply,
   divide,
 };
@@ -53,25 +53,32 @@ const operations = {
 //Create inputDisplayNum mechanism
 numBtns.forEach((numBut) => {
   numBut.addEventListener("click", (event) => {
-    
     //On current entry, just do the regular thing
-    if (currentOperator === null) { //THIS LOGIC TOUGH
-      if (inputDisplayNum.includes(".") && event.target.id === "decimal") {
-        //ignore second decimal by doing nothing
-      } else {
-        inputDisplayNum += event.target.textContent;
-        output.textContent = inputDisplayNum;
-        console.log(typeof inputDisplayNum);
-      }
-    } else { //if there is an operator selected, start a new one
-      output.textContent = "";
+
+    if (inputDisplayNum.includes(".") && event.target.id === "decimal") {
+      //ignore second decimal by doing nothing
+    } else {
+      inputDisplayNum += event.target.textContent;
+      output.textContent = inputDisplayNum;
     }
   });
 });
 
 operators.forEach((opBut) => {
   opBut.addEventListener("click", (event) => {
-    currentOperator = event.target.id;
+    if (currentOperator === null) {
+      currentOperator = event.target.id; //and then wait for the number
+      console.log(output.textContent);
+      accum = parseFloat(output.textContent); //save the entry
+      inputDisplayNum = ""; //reset the entry to next number input starts from nothing (new number)
+    } else {
+      if (accum != null) {
+        let result = operations[currentOperator](accum, parseFloat(output.textContent));
+        accum = result;
+        output.textContext = accum; //display the result
+        currentOperator = null; //await new operator
+      }
+    }
   });
 });
 
