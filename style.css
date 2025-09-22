@@ -49,6 +49,7 @@
 
 button:hover {
     background-color:aliceblue;
+    border-color: red;
 }
 
 #equals {

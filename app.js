@@ -4,6 +4,7 @@ const output = document.getElementById("output");
 const cle = document.getElementById("CE");
 const arithOperators = document.querySelectorAll(".arith");
 const operators = document.querySelectorAll(".op");
+const equals = document.getElementById("equals");
 
 //Display level
 let inputDisplayNum = ""; //a holder to captur
@@ -64,22 +65,42 @@ numBtns.forEach((numBut) => {
   });
 });
 
+function evaluate() {
+  let result = operations[currentOperator](
+    accum,
+    parseFloat(output.textContent)
+  );
+  accum = result;
+  output.textContent = accum; //display the result
+  currentOperator = null; //await new operator
+  inputDisplayNum = "";
+}
+
 operators.forEach((opBut) => {
   opBut.addEventListener("click", (event) => {
-    if (currentOperator === null) {
+    //All clear new, expecting
+    if (currentOperator === null && accum === null) {
       currentOperator = event.target.id; //and then wait for the number
       console.log(output.textContent);
-      accum = parseFloat(output.textContent); //save the entry
+      accum = parseFloat(inputDisplayNum); //save the entry
+      output.textContent = accum + " " + event.target.textContent;
       inputDisplayNum = ""; //reset the entry to next number input starts from nothing (new number)
-    } else {
-      if (accum != null) {
-        let result = operations[currentOperator](accum, parseFloat(output.textContent));
-        accum = result;
-        output.textContext = accum; //display the result
-        currentOperator = null; //await new operator
-      }
-    }
+
+      //Accum an accum but an operator, just change the operator
+    } else if (accum != null && currentOperator === null) {
+      //right after equals, if you hit a operator, just change it
+      currentOperator = event.target.id;
+      output.textContent = accum + " " + event.target.textContent;
+      inputDisplayNum = "";
+    } else if (accum != null && currentOperator != null) {
+      evaluate(); //evaluate with current operator
+      currentOperator = event.target.id; //preapre for next operator
+    } else evaluate();
   });
+});
+
+equals.addEventListener("click", () => {
+  evaluate();
 });
 
 // //An operator is pushed. It can either way for the second input, or show the result
