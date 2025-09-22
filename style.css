@@ -25,14 +25,24 @@
     justify-content: space-evenly;
     gap: 5px;
     height: 100px;
-
 }
 
-.button {
+.row > button {
+    flex: 1 1 0;
     aspect-ratio: 1.5 / 1;
-    flex: 1;
     font-size: 30px;
     border-radius: 8px;
+    border: 2px solid black;
+    font-family:'Courier New', Courier, monospace;
+}
+
+#CE {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1.2 / 1;
+    font-size: 30px;
+    border-radius: 8px;
+    height: 50px;
     border: 2px solid black;
     font-family:'Courier New', Courier, monospace;
 }
