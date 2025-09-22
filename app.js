@@ -6,12 +6,15 @@ const arithOperators = document.querySelectorAll(".arith");
 const operators = document.querySelectorAll(".op");
 const equals = document.getElementById("equals");
 
+const validInputs = "1234567890.)/+-";
+
 //Display level
 let inputDisplayNum = ""; //a holder to captur
 
 //Under the hood level
 let accum = null; //this is the saved A and will always be a float
 let currentOperator = null; //this is what you need to do
+let contest = ""
 
 //CE clears all memory
 cle.addEventListener("click", () => {
@@ -33,10 +36,6 @@ function subtract(a, b) {
 }
 
 function divide(a, b) {
-  //handle if b is zero
-  // if (b === 0) {
-  //     inputDisplayNum = "Error"
-  // }
   return a / b;
 }
 
