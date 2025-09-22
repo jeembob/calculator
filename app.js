@@ -29,7 +29,11 @@ function subtract(a, b) {
 }
 
 function divide(a, b) {
-  return a / b;
+  if (b === 0) {
+    return "Nice try bruh"
+  } else {
+    return a / b;
+  }
 }
 
 function multiply(a, b) {
