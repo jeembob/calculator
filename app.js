@@ -95,6 +95,7 @@ operators.forEach((opBut) => {
     } else if (accum != null && currentOperator != null) {
       evaluate(); //evaluate with current operator
       currentOperator = event.target.id; //preapre for next operator
+      output.textContent = accum + " " + event.target.textContent;
     } else evaluate();
   });
 });
