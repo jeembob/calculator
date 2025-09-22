@@ -55,7 +55,7 @@ numBtns.forEach((numBut) => {
   numBut.addEventListener("click", (event) => {
     
     //On current entry, just do the regular thing
-    if (currentOperator === null) {
+    if (currentOperator === null) { //THIS LOGIC TOUGH
       if (inputDisplayNum.includes(".") && event.target.id === "decimal") {
         //ignore second decimal by doing nothing
       } else {
