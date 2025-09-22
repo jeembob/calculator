@@ -68,16 +68,18 @@ const keySymbols = {
 
 console.log(keySymbols["*"]);
 
-//Hitting the equals button
-equals.addEventListener("click", () => {
+//The equals button
+equals.addEventListener("click", (event) => {
   evaluate();
 });
 
-//Keyboard Controls
+//Keyboard inputs
 document.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     event.preventDefault(); //This stops from pressing the focused mouse area button!!!
     equals.click();
+  } else if (event.key === "Backspace") {
+    cle.click();
   } else if (keySymbols[event.key] != undefined) {
     document.getElementById(keySymbols[event.key]).click();
   } else {
