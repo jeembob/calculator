@@ -7,6 +7,10 @@ const operators = document.querySelectorAll(".op");
 const equals = document.getElementById("equals");
 const contextWindow = document.getElementById("context");
 
+const ac = document.getElementById("accum");
+const cur = document.getElementById("co");
+const inpu = document.getElementById("inp");
+
 //Display level
 let inputDisplayNum = ""; //Under the hood presentation of the display so you can start a new number
 let contextText = "";
@@ -62,13 +66,13 @@ const keySymbols = {
 
 //CE clear all
 cle.addEventListener("click", () => {
-  console.log("pushed");
   accum = null;
   currentOperator = null;
   output.textContent = "";
   inputDisplayNum = "";
   contextWindow.textContent = "";
   floatEntry = 0;
+  list();
 });
 
 //Evalutes arithmetic
@@ -82,17 +86,22 @@ function evaluate() {
   currentOperator = null; //await new operator
   inputDisplayNum = "";
   contextWindow.textContent = "";
+  list();
 }
 
 //Equals button behavior
 equals.addEventListener("click", (event) => {
   evaluate();
+  list();
 });
 
 //Number button behavior
 numBtns.forEach((numBut) => {
   numBut.addEventListener("click", (event) => {
-    if (inputDisplayNum.includes(".") && event.target.id === "decimal") {
+    if (
+      (inputDisplayNum.includes(".") && event.target.id === "decimal") ||
+      (accum == output.textContent && currentOperator === null) //Used loose equality to compare to numbers
+    ) {
       //ignore multiple decimals
     } else {
       inputDisplayNum += event.target.textContent;
@@ -101,6 +110,7 @@ numBtns.forEach((numBut) => {
         contextWindow.textContent =
           accum + " " + operatorSymbols[currentOperator];
       }
+      list();
     }
   });
 });
@@ -111,23 +121,24 @@ operators.forEach((opBut) => {
     //All clear new, expecting
     if (currentOperator === null && accum === null) {
       currentOperator = event.target.id; //and then wait for the number
-      console.log(output.textContent);
-      accum = parseFloat(inputDisplayNum); //save the entry
+      // inputDisplayNum = output.textContent;
+      accum = parseFloat(inputDisplayNum) ? parseFloat(inputDisplayNum) : 0; //save the entry
       output.textContent = accum + " " + event.target.textContent;
       inputDisplayNum = ""; //reset the entry to next number input starts from nothing (new number)
-
-      //Right after you hit equals
+      list();
+      //Right after you hit equals, waiting for next
     } else if (accum != null && currentOperator === null) {
       //right after equals, if you hit a operator, just change it
       currentOperator = event.target.id;
       output.textContent = accum + " " + event.target.textContent;
       inputDisplayNum = "";
-
+      list();
       //On sequential operator push
     } else if (accum != null && currentOperator != null) {
       evaluate(); //evaluate with current operator
       currentOperator = event.target.id; //preapre for next operator
       output.textContent = accum + " " + event.target.textContent;
+      list();
     } else evaluate();
   });
 });
@@ -138,10 +149,26 @@ document.addEventListener("keydown", (event) => {
     event.preventDefault(); //This stops from pressing the focused mouse area button!!!
     equals.click();
   } else if (event.key === "Backspace") {
-    cle.click();
+    if (accum == output.textContent && currentOperator === null) {
+      //do nothing if the window is an output
+    } else {
+      let backone = output.textContent.slice(0, -1);
+      output.textContent = backone;
+      // inputDisplayNum = backone;
+    }
   } else if (keySymbols[event.key] != undefined) {
     document.getElementById(keySymbols[event.key]).click();
+  } else if (event.key === "Delete") {
+    cle.click();
   } else {
     document.getElementById(event.key).click();
   }
 });
+
+//verify
+
+function list() {
+  ac.textContent = "accum: " + accum;
+  cur.textContent = "current operator: " + currentOperator;
+  inpu.textContent = "input num: " + inputDisplayNum;
+}

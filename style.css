@@ -20,7 +20,7 @@
     justify-content: flex-start;
     align-items: baseline;
     padding: 8px 8px;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 #output {
@@ -28,8 +28,8 @@
     justify-content: flex-end;
     align-items: center;
     flex: 1;
-    gap: 10px 10px;
-    font-size: 40px;
+    padding: 15px 15px;
+    font-size: 50px;
 }
 
 .row {
