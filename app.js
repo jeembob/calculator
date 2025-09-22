@@ -8,25 +8,14 @@ const equals = document.getElementById("equals");
 const contextWindow = document.getElementById("context");
 
 //Display level
-let inputDisplayNum = ""; //a holder to captur
-
-//Under the hood level
-let accum = null; //this is the saved A and will always be a float
-let currentOperator = null; //this is what you need to do
+let inputDisplayNum = ""; //Under the hood presentation of the display so you can start a new number
 let contextText = "";
 
-//CE clears all memory
-cle.addEventListener("click", () => {
-  console.log("pushed");
-  accum = null;
-  currentOperator = null;
-  output.textContent = "";
-  inputDisplayNum = "";
-  contextWindow.textContent = "";
-  floatEntry = 0;
-});
+//Calculation variables
+let accum = null; //this is the saved A and will always be a float
+let currentOperator = null; //this is what you need to do
 
-//all of my functions
+//Arithmetic functions
 function add(a, b) {
   return a + b;
 }
@@ -43,6 +32,7 @@ function multiply(a, b) {
   return a * b;
 }
 
+//Object of functions
 const operations = {
   add,
   subtract,
@@ -50,6 +40,7 @@ const operations = {
   divide,
 };
 
+//Symbols for text context help
 const operatorSymbols = {
   add: "+",
   subtract: "−",
@@ -58,6 +49,7 @@ const operatorSymbols = {
   decimal: ".",
 };
 
+//"Reverse lookup" for keyboard detection, to keyboad pushes can map to arith. functions
 const keySymbols = {
   "+": "add",
   "-": "subtract",
@@ -66,28 +58,38 @@ const keySymbols = {
   ".": "decimal",
 };
 
-console.log(keySymbols["*"]);
+//CORE CALCULATOR APP FUNCTIONALITY
 
-//The equals button
+//CE clear all
+cle.addEventListener("click", () => {
+  console.log("pushed");
+  accum = null;
+  currentOperator = null;
+  output.textContent = "";
+  inputDisplayNum = "";
+  contextWindow.textContent = "";
+  floatEntry = 0;
+});
+
+//Evalutes arithmetic
+function evaluate() {
+  let result = operations[currentOperator](
+    accum,
+    parseFloat(output.textContent)
+  );
+  accum = result;
+  output.textContent = accum; //display the result
+  currentOperator = null; //await new operator
+  inputDisplayNum = "";
+  contextWindow.textContent = "";
+}
+
+//Equals button behavior
 equals.addEventListener("click", (event) => {
   evaluate();
 });
 
-//Keyboard inputs
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault(); //This stops from pressing the focused mouse area button!!!
-    equals.click();
-  } else if (event.key === "Backspace") {
-    cle.click();
-  } else if (keySymbols[event.key] != undefined) {
-    document.getElementById(keySymbols[event.key]).click();
-  } else {
-    document.getElementById(event.key).click();
-  }
-});
-
-//Click input control
+//Number button behavior
 numBtns.forEach((numBut) => {
   numBut.addEventListener("click", (event) => {
     if (inputDisplayNum.includes(".") && event.target.id === "decimal") {
@@ -103,18 +105,7 @@ numBtns.forEach((numBut) => {
   });
 });
 
-function evaluate() {
-  let result = operations[currentOperator](
-    accum,
-    parseFloat(output.textContent)
-  );
-  accum = result;
-  output.textContent = accum; //display the result
-  currentOperator = null; //await new operator
-  inputDisplayNum = "";
-  contextWindow.textContent = "";
-}
-
+//Operator button behavior
 operators.forEach((opBut) => {
   opBut.addEventListener("click", (event) => {
     //All clear new, expecting
@@ -139,4 +130,18 @@ operators.forEach((opBut) => {
       output.textContent = accum + " " + event.target.textContent;
     } else evaluate();
   });
+});
+
+//Keyboard inputs
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault(); //This stops from pressing the focused mouse area button!!!
+    equals.click();
+  } else if (event.key === "Backspace") {
+    cle.click();
+  } else if (keySymbols[event.key] != undefined) {
+    document.getElementById(keySymbols[event.key]).click();
+  } else {
+    document.getElementById(event.key).click();
+  }
 });
