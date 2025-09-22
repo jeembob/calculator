@@ -167,8 +167,8 @@ document.addEventListener("keydown", (event) => {
 
 //verify
 
-function list() {
-  ac.textContent = "accum: " + accum;
-  cur.textContent = "current operator: " + currentOperator;
-  inpu.textContent = "input num: " + inputDisplayNum;
-}
+// function list() {
+//   ac.textContent = "accum: " + accum;
+//   cur.textContent = "current operator: " + currentOperator;
+//   inpu.textContent = "input num: " + inputDisplayNum;
+// }
