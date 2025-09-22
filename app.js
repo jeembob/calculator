@@ -7,10 +7,6 @@ const operators = document.querySelectorAll(".op");
 const equals = document.getElementById("equals");
 const contextWindow = document.getElementById("context");
 
-const validInputs = "1234567890.)/+-";
-
-
-
 //Display level
 let inputDisplayNum = ""; //a holder to captur
 
@@ -18,8 +14,6 @@ let inputDisplayNum = ""; //a holder to captur
 let accum = null; //this is the saved A and will always be a float
 let currentOperator = null; //this is what you need to do
 let contextText = "";
-
-document 
 
 //CE clears all memory
 cle.addEventListener("click", () => {
@@ -58,23 +52,50 @@ const operations = {
 
 const operatorSymbols = {
   add: "+",
-  subtract: "−",  
-  multiply: "×",   
-  divide: "÷"
+  subtract: "−",
+  multiply: "×",
+  divide: "÷",
+  decimal: ".",
 };
 
-//Create inputDisplayNum mechanism
+const keySymbols = {
+  "+": "add",
+  "-": "subtract",
+  "*": "multiply",
+  "/": "divide",
+  ".": "decimal",
+};
+
+console.log(keySymbols["*"]);
+
+//Hitting the equals button
+equals.addEventListener("click", () => {
+  evaluate();
+});
+
+//Keyboard Controls
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault(); //This stops from pressing the focused mouse area button!!!
+    equals.click();
+  } else if (keySymbols[event.key] != undefined) {
+    document.getElementById(keySymbols[event.key]).click();
+  } else {
+    document.getElementById(event.key).click();
+  }
+});
+
+//Click input control
 numBtns.forEach((numBut) => {
   numBut.addEventListener("click", (event) => {
-    //On current entry, just do the regular thing
-
     if (inputDisplayNum.includes(".") && event.target.id === "decimal") {
-      //ignore second decimal by doing nothing
+      //ignore multiple decimals
     } else {
       inputDisplayNum += event.target.textContent;
       output.textContent = inputDisplayNum;
       if (currentOperator != null && accum != null) {
-        contextWindow.textContent = accum + " " + operatorSymbols[currentOperator];
+        contextWindow.textContent =
+          accum + " " + operatorSymbols[currentOperator];
       }
     }
   });
@@ -117,28 +138,3 @@ operators.forEach((opBut) => {
     } else evaluate();
   });
 });
-
-equals.addEventListener("click", () => {
-  evaluate();
-});
-
-// //An operator is pushed. It can either way for the second input, or show the result
-// arithOperators.forEach((opBut) => {
-//   opBut.addEventListener("click", (event) => {
-//     //get the operator
-//     currentOperator = event.target.id;
-
-//     //display it
-//     inputDisplayNum += event.target.textContent;
-//     output.textContent = inputDisplayNum;
-
-//     accum = operations[currentOperator](accum, floatEntry); //operate A/B, return result
-//     inputDisplayNum = accum; //show the current
-//   });
-// });
-
-//create multifunctional press of operator
-function operate(curr, second, oper) {
-  //cases null, 1
-  //case2 something, something, operator
-}
