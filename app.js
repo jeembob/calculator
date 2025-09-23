@@ -76,7 +76,7 @@ cle.addEventListener("click", () => {
   inputDisplayNum = "";
   contextWindow.textContent = "";
   floatEntry = 0;
-  list();
+//   list();
 });
 
 //Evalutes arithmetic
@@ -90,13 +90,13 @@ function evaluate() {
   currentOperator = null; //await new operator
   inputDisplayNum = "";
   contextWindow.textContent = "";
-  list();
+//   list();
 }
 
 //Equals button behavior
 equals.addEventListener("click", (event) => {
   evaluate();
-  list();
+//   list();
 });
 
 //Number button behavior
@@ -114,7 +114,7 @@ numBtns.forEach((numBut) => {
         contextWindow.textContent =
           accum + " " + operatorSymbols[currentOperator];
       }
-      list();
+    //   list();
     }
   });
 });
@@ -129,20 +129,20 @@ operators.forEach((opBut) => {
       accum = parseFloat(inputDisplayNum) ? parseFloat(inputDisplayNum) : 0; //save the entry
       output.textContent = accum + " " + event.target.textContent;
       inputDisplayNum = ""; //reset the entry to next number input starts from nothing (new number)
-      list();
+    //   list();
       //Right after you hit equals, waiting for next
     } else if (accum != null && currentOperator === null) {
       //right after equals, if you hit a operator, just change it
       currentOperator = event.target.id;
       output.textContent = accum + " " + event.target.textContent;
       inputDisplayNum = "";
-      list();
+    //   list();
       //On sequential operator push
     } else if (accum != null && currentOperator != null) {
       evaluate(); //evaluate with current operator
       currentOperator = event.target.id; //preapre for next operator
       output.textContent = accum + " " + event.target.textContent;
-      list();
+    //   list();
     } else evaluate();
   });
 });
